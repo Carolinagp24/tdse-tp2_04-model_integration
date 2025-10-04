@@ -213,6 +213,20 @@ void task_actuator_statechart(void)
 					HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
 					p_task_actuator_dta->state = ST_LED_XX_OFF;
 				}
+				else if (p_task_actuator_dta->flag && (EV_LED_XX_BLINK == p_task_actuator_dta->event))
+				{
+					//p_task_actuator_dta->flag = false;
+					HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
+					p_task_actuator_dta->state = ST_LED_XX_BLINK_ON;
+					p_task_actuator_dta->tick  = p_task_actuator_cfg->tick_blink;
+				}
+				else if (p_task_actuator_dta->flag && (EV_LED_XX_PULSE == p_task_actuator_dta->event))
+				{
+					p_task_actuator_dta->flag = false;
+					HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
+					p_task_actuator_dta->state = ST_LED_XX_PULSE;
+					p_task_actuator_dta->tick  = p_task_actuator_cfg->tick_pulse;
+				}
 
 				break;
 
